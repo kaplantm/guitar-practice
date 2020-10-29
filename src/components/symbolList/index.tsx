@@ -16,14 +16,16 @@ import {
   // incrementAsync,
   selectSymbolList,
 } from "../../lib/redux/slices/symbolListSlice";
+import { generateSymbol } from "../../lib/utils/symbolUtils";
 import useStyles from "./useStyles";
 
 export function Counter() {
   const classes = useStyles();
-  const symbols = useSelector(selectSymbolList);
+  const symbols = useSelector(selectSymbolList) || {};
   const dispatch = useDispatch();
   const [symbolText, setSymbolText] = useState("");
 
+  const symbolsList = Object.keys(symbols).sort();
   const isValid = !!symbolText;
 
   function onChange(
@@ -35,13 +37,14 @@ export function Counter() {
   function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     console.log("onSubmit");
-    dispatch(add(symbolText));
+    dispatch(add(generateSymbol({ name: symbolText })));
     setSymbolText("");
   }
-  function removeSymbol(symbol: string) {
-    console.log("remove", symbol);
-    dispatch(remove(symbol));
+  function removeSymbol(symbolName: string) {
+    console.log("remove", symbolName);
+    dispatch(remove(symbols[symbolName]));
   }
+
   console.log({ symbols });
   return (
     <Paper square elevation={4} className={classes.sidebar}>
@@ -53,6 +56,7 @@ export function Counter() {
             variant="outlined"
             onChange={onChange}
             value={symbolText}
+            placeholder="Enter stock symbol"
           />
           <IconButton
             className={classes.iconButton}
@@ -65,23 +69,23 @@ export function Counter() {
         </Box>
       </form>
       <Box mt={3} display="flex" flexDirection="column">
-        {!!symbols &&
-          symbols.map((symbol) => (
-            <Box
-              display="flex"
-              alignItems="center"
-              flex={1}
-              className={classes.symbolRow}
+        {symbolsList.map((symbol) => (
+          <Box
+            display="flex"
+            alignItems="center"
+            flex={1}
+            className={classes.symbolRow}
+            key={symbol}
+          >
+            <IconButton
+              className={clsx("trashButton", classes.trashButton)}
+              onClick={() => removeSymbol(symbol)}
             >
-              <IconButton
-                className={clsx("trashButton", classes.trashButton)}
-                onClick={() => removeSymbol(symbol)}
-              >
-                <HighlightOff color="primary" fontSize="small" />
-              </IconButton>
-              <Typography color="primary">{symbol}</Typography>
-            </Box>
-          ))}
+              <HighlightOff color="primary" fontSize="small" />
+            </IconButton>
+            <Typography color="primary">{symbol.toUpperCase()}</Typography>
+          </Box>
+        ))}
       </Box>
     </Paper>
   );

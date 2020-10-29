@@ -14,6 +14,7 @@ export const store = configureStore({
   reducer: persistedReducer,
 });
 
+// Handle rehydration for version updates?
 export const persistor = persistStore(store);
 
 export type RootState = ReturnType<typeof store.getState>;

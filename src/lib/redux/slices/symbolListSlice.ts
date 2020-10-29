@@ -1,39 +1,41 @@
-import { AccordionActions } from "@material-ui/core";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { AppThunk, RootState } from "../store";
+import { SymbolType } from "../../constants/types";
+import { generateSymbol } from "../../utils/symbolUtils";
+import { RootState } from "../store";
 
-interface CounterState {
-  list: string[];
+interface SymbolState {
+  symbols: { [key: string]: SymbolType };
 }
 
-const initialState: CounterState = {
-  list: ["jim"],
+const initialState: SymbolState = {
+  symbols: { AAPL: generateSymbol({ name: "AAPL" }) },
 };
 
 export const counterSlice = createSlice({
   name: "symbolList",
   initialState,
   reducers: {
-    add: (state, action: PayloadAction<string>) => {
+    add: (state, action: PayloadAction<SymbolType>) => {
       // Redux Toolkit allows us to write "mutating" logic in reducers. It
       // doesn't actually mutate the state because it uses the Immer library,
       // which detects changes to a "draft state" and produces a brand new
       // immutable state based off those changes
-      if (action.payload) {
-        const index = state.list.indexOf(action.payload);
-        if (index === -1) {
-          state.list.push(action.payload);
-          state.list.sort();
+      const name = action?.payload?.name;
+      console.log({ name });
+      if (name) {
+        const oldValue = state.symbols ? state.symbols[name] : null;
+        console.log({ oldValue });
+        if (!oldValue) {
+          state.symbols[name] = action.payload;
         }
       }
     },
-    remove: (state, action: PayloadAction<string>) => {
-      console.log("1", { pay: action.payload });
-      if (action.payload) {
-        const index = state.list.indexOf(action.payload);
-        if (index !== -1) {
-          console.log({ pay: action.payload, index });
-          state.list.splice(index, 1);
+    remove: (state, action: PayloadAction<SymbolType>) => {
+      const name = action?.payload?.name;
+      if (name) {
+        const oldValue = state.symbols ? state.symbols[name] : null;
+        if (oldValue) {
+          delete state.symbols[name];
         }
       }
     },
@@ -55,6 +57,6 @@ export const { add, remove } = counterSlice.actions;
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of
 // in the slice file. For example: `useSelector((state: RootState) => state.counter.value)`
-export const selectSymbolList = (state: RootState) => state.symbolList.list;
+export const selectSymbolList = (state: RootState) => state.symbolList.symbols; //TODO: rename symbolList
 
 export default counterSlice.reducer;
