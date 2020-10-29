@@ -1,11 +1,18 @@
 import { red } from "@material-ui/core/colors";
-import { createMuiTheme } from "@material-ui/core/styles";
+import {
+  createMuiTheme,
+  darken,
+  fade,
+  lighten,
+} from "@material-ui/core/styles";
+import { darkPurple } from "./lib/constants/colors";
 
+// TODO: change default font color
 // A custom theme for this app
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: "#556cd6",
+      main: lighten(darkPurple, 0.3),
     },
     secondary: {
       main: "#19857b",
@@ -14,7 +21,14 @@ const theme = createMuiTheme({
       main: red.A400,
     },
     background: {
-      default: "#fff",
+      default: darken(darkPurple, 0.2),
+    },
+  },
+  overrides: {
+    MuiPaper: {
+      root: {
+        backgroundColor: darkPurple,
+      },
     },
   },
 });

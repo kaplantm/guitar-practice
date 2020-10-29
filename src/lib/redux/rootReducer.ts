@@ -1,8 +1,8 @@
 import { combineReducers } from "@reduxjs/toolkit";
-import counterReducer from "./slices/counterSlice";
+import symbolListReducer from "./slices/symbolListSlice";
 
 const rootReducer = combineReducers({
-  counter: counterReducer,
+  symbolList: symbolListReducer,
 });
 
 export default rootReducer;

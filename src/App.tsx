@@ -1,16 +1,15 @@
 import React from "react";
-import { Container, Box, Typography } from "@material-ui/core";
+import { Box } from "@material-ui/core";
 import "./App.css";
+import { Counter } from "./components/symbolList";
+import { Dash } from "./components/dash";
 
 function App() {
   return (
-    <Container maxWidth="sm">
-      <Box my={4}>
-        <Typography variant="h4" component="h1" gutterBottom color="primary">
-          Create React App v4-beta example
-        </Typography>
-      </Box>
-    </Container>
+    <Box display="flex" flex={1}>
+      <Counter />
+      <Dash />
+    </Box>
   );
 }
 
