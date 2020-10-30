@@ -1,7 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { SymbolType } from "../../constants/types";
 import { generateSymbol } from "../../utils/symbolUtils";
-import { RootState } from "../store";
+import { RootStateType } from "../rootReducer";
+import { AppThunk, RootState } from "../store";
 
 interface SymbolState {
   symbols: { [key: string]: SymbolType };
@@ -30,8 +31,8 @@ export const counterSlice = createSlice({
         }
       }
     },
-    remove: (state, action: PayloadAction<SymbolType>) => {
-      const name = action?.payload?.name;
+    remove: (state, action: PayloadAction<string>) => {
+      const name = action?.payload;
       if (name) {
         const oldValue = state.symbols ? state.symbols[name] : null;
         if (oldValue) {
@@ -57,6 +58,6 @@ export const { add, remove } = counterSlice.actions;
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of
 // in the slice file. For example: `useSelector((state: RootState) => state.counter.value)`
-export const selectSymbolList = (state: RootState) => state.symbolList.symbols; //TODO: rename symbolList
+export const selectSymbols = (state: RootState) => state.symbolList.symbols; //TODO: rename symbolList
 
 export default counterSlice.reducer;

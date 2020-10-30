@@ -25,9 +25,19 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   symbolRow: {
+    cursor: "pointer",
+    marginTop: theme.spacing(0.5),
+    marginBottom: theme.spacing(0.5),
     padding: theme.spacing(1, 2, 1, 0),
+    borderRadius: 6,
     "&:hover": {
-      backgroundColor: darken(darkPurple, 0.35),
+      backgroundColor: darken(darkPurple, 0.38),
+    },
+  },
+  selectedSymbolRow: {
+    backgroundColor: darken(darkPurple, 0.45),
+    "&:hover": {
+      backgroundColor: darken(darkPurple, 0.5),
     },
   },
 }));

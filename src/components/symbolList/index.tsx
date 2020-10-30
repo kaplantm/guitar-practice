@@ -7,25 +7,28 @@ import {
 } from "@material-ui/core";
 import { Add, HighlightOff } from "@material-ui/icons";
 import clsx from "clsx";
-import React, { ChangeEvent, FormEvent, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import {
-  add,
-  remove,
-  // incrementByAmount,
-  // incrementAsync,
-  selectSymbolList,
-} from "../../lib/redux/slices/symbolListSlice";
+import React, { ChangeEvent, FormEvent, MouseEvent, useState } from "react";
+import { useDispatch } from "react-redux";
+import { Nullable, SymbolType } from "../../lib/constants/types";
+import { add, remove } from "../../lib/redux/slices/symbolListSlice";
 import { generateSymbol } from "../../lib/utils/symbolUtils";
 import useStyles from "./useStyles";
 
-export function Counter() {
+export function SymbolList({
+  symbolNameList,
+  selectedSymbol,
+  setSelectedSymbol,
+  setSelectedSymbolByName,
+}: {
+  symbolNameList: string[];
+  selectedSymbol: Nullable<SymbolType>;
+  setSelectedSymbol: (symbolName: Nullable<SymbolType>) => void;
+  setSelectedSymbolByName: (symbolName: Nullable<string>) => void;
+}) {
   const classes = useStyles();
-  const symbols = useSelector(selectSymbolList) || {};
   const dispatch = useDispatch();
   const [symbolText, setSymbolText] = useState("");
 
-  const symbolsList = Object.keys(symbols).sort();
   const isValid = !!symbolText;
 
   function onChange(
@@ -34,18 +37,29 @@ export function Counter() {
     setSymbolText(event?.target?.value);
   }
 
+  function selectSymbol(symbolName: Nullable<string>) {
+    console.log("selectSymbol");
+    setSelectedSymbolByName(symbolName);
+  }
+
   function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     console.log("onSubmit");
-    dispatch(add(generateSymbol({ name: symbolText })));
+    const newSymbol = generateSymbol({ name: symbolText });
+    dispatch(add(newSymbol));
+    setSelectedSymbol(newSymbol);
     setSymbolText("");
   }
+
   function removeSymbol(symbolName: string) {
-    console.log("remove", symbolName);
-    dispatch(remove(symbols[symbolName]));
+    console.log("remove", { symbolName, selectedSymbol });
+    if (selectedSymbol?.name === symbolName) {
+      console.log("if");
+      selectSymbol(null);
+    }
+    dispatch(remove(symbolName));
   }
 
-  console.log({ symbols });
   return (
     <Paper square elevation={4} className={classes.sidebar}>
       <form noValidate autoComplete="off" onSubmit={onSubmit}>
@@ -69,21 +83,29 @@ export function Counter() {
         </Box>
       </form>
       <Box mt={3} display="flex" flexDirection="column">
-        {symbolsList.map((symbol) => (
+        {symbolNameList.map((symbolName) => (
           <Box
             display="flex"
             alignItems="center"
             flex={1}
-            className={classes.symbolRow}
-            key={symbol}
+            className={clsx(
+              classes.symbolRow,
+              selectedSymbol?.name === symbolName && classes.selectedSymbolRow
+            )}
+            key={symbolName}
+            onClick={() => selectSymbol(symbolName)}
           >
             <IconButton
               className={clsx("trashButton", classes.trashButton)}
-              onClick={() => removeSymbol(symbol)}
+              onClick={(e: MouseEvent<any>) => {
+                e.stopPropagation();
+                removeSymbol(symbolName);
+              }}
             >
               <HighlightOff color="primary" fontSize="small" />
             </IconButton>
-            <Typography color="primary">{symbol.toUpperCase()}</Typography>
+
+            <Typography color="primary">{symbolName.toUpperCase()}</Typography>
           </Box>
         ))}
       </Box>

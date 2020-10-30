@@ -1,12 +1,17 @@
 import { Box, Paper } from "@material-ui/core";
 import React from "react";
+import { SymbolType, Nullable } from "../../lib/constants/types";
 import useStyles from "./useStyles";
 
-export function Dash() {
+export function Dash({
+  selectedSymbol,
+}: {
+  selectedSymbol: Nullable<SymbolType>;
+}) {
   const classes = useStyles();
 
   return (
-    <Box className={classes.dash}>dash</Box>
+    <Box className={classes.dash}>dash: {selectedSymbol?.name}</Box>
     // <div>
     //   <div>
     //     <button
