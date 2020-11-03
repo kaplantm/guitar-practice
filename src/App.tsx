@@ -1,56 +1,19 @@
 import React from "react";
-import { Box } from "@material-ui/core";
+import { Box, Grid, Container } from "@material-ui/core";
 import "./App.css";
-import { SymbolList } from "./components/symbolList";
-import { Dash } from "./components/dash";
-import { SymbolType, Nullable } from "./lib/constants/types";
-import { useSelector } from "react-redux";
-import { selectSymbols } from "./lib/redux/slices/stockSlice";
+import { SetupBar } from "./components/setupBar";
 
 function App() {
-  const symbols = useSelector(selectSymbols) || {};
-  const symbolNameList = Object.keys(symbols).sort();
-  const defaultSymbol = symbolNameList[0] ? symbols[symbolNameList[0]] : null;
-  const [selectedSymbol, setSelectedSymbol] = React.useState<
-    Nullable<SymbolType>
-  >(defaultSymbol);
-  const hasValidSelection = selectedSymbol?.name
-    ? symbolNameList.indexOf(selectedSymbol.name) !== -1
-    : !defaultSymbol;
-
-  React.useEffect(() => {
-    if (!hasValidSelection) {
-      setSelectedSymbol(defaultSymbol);
-    }
-  }, [hasValidSelection, defaultSymbol]);
-
-  function updateSymbolByName(symbolName: Nullable<string>) {
-    if (symbolName) {
-      setSelectedSymbol(symbols[symbolName]);
-    } else {
-      setSelectedSymbol(defaultSymbol);
-    }
-  }
-
-  function updateSymbol(symbol: Nullable<SymbolType>) {
-    setSelectedSymbol(symbol);
-  }
-
   return (
-    <Box display="flex" flex={1}>
-      <SymbolList
-        selectedSymbol={selectedSymbol}
-        setSelectedSymbolByName={updateSymbolByName}
-        setSelectedSymbol={updateSymbol}
-        symbolNameList={symbolNameList}
-      />
-      {selectedSymbol?.name ? (
-        <Dash symbolName={selectedSymbol?.name} />
-      ) : (
-        // TODO: make generic error component
-        <h3>no symbol</h3>
-      )}
-    </Box>
+    <Container>
+      <Box mt={3} mb={3}>
+        <Grid container spacing={3}>
+          <Grid item xs={12}>
+            <SetupBar />
+          </Grid>
+        </Grid>
+      </Box>
+    </Container>
   );
 }
 

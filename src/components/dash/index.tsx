@@ -1,7 +1,5 @@
 import { Box, Container, Grid } from "@material-ui/core";
 import React from "react";
-import { AsyncDashPanel } from "./async-dash-panel";
-import { QuotePanel } from "./async-dash-panel/panels/quote-panel";
 // import useStyles from "./useStyles";
 
 export function Dash({ symbolName }: { symbolName: string }) {
@@ -15,12 +13,12 @@ export function Dash({ symbolName }: { symbolName: string }) {
       <Box mt={3} mb={3}>
         <Grid container spacing={3}>
           <Grid item xs={12}>
-            <AsyncDashPanel
+            {/* <AsyncDashPanel
               Panel={QuotePanel}
               symbolName={symbolName}
               dataPointKey="quote"
               title="Quote"
-            />
+            /> */}
           </Grid>
           {/* <Grid item xs={6}>
             <AsyncDashPanel

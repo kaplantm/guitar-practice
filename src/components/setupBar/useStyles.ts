@@ -1,15 +1,15 @@
 import { darken, lighten, makeStyles } from "@material-ui/core/styles";
-import { darkPurple } from "../../lib/constants/colors";
+import { darkBlue } from "../../lib/constants/colors";
 
 const useStyles = makeStyles((theme) => ({
   sidebar: {
     padding: theme.spacing(2),
-    borderRight: `2px solid ${darken(darkPurple, 0.4)}`,
-    backgroundColor: darken(darkPurple, 0.32),
+    borderRight: `2px solid ${darken(darkBlue, 0.4)}`,
+    backgroundColor: darken(darkBlue, 0.32),
   },
   symbolInput: {
-    backgroundColor: lighten(darkPurple, 0.3),
-    color: darken(darkPurple, 0.4),
+    backgroundColor: lighten(darkBlue, 0.3),
+    color: darken(darkBlue, 0.4),
   },
   iconButton: {
     margin: theme.spacing(0, 3),
@@ -32,13 +32,13 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(1, 2, 1, 0),
     borderRadius: 6,
     "&:hover": {
-      backgroundColor: darken(darkPurple, 0.38),
+      backgroundColor: darken(darkBlue, 0.38),
     },
   },
   selectedSymbolRow: {
-    backgroundColor: darken(darkPurple, 0.45),
+    backgroundColor: darken(darkBlue, 0.45),
     "&:hover": {
-      backgroundColor: darken(darkPurple, 0.5),
+      backgroundColor: darken(darkBlue, 0.5),
     },
   },
 }));

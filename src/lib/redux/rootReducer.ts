@@ -2,7 +2,7 @@ import { combineReducers } from "@reduxjs/toolkit";
 import stockReducer from "./slices/stockSlice";
 
 const rootReducer = combineReducers({
-  stocks: stockReducer,
+  notes: stockReducer,
 });
 
 export default rootReducer;

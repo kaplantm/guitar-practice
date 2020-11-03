@@ -8,52 +8,32 @@ import {
 import { Add, HighlightOff } from "@material-ui/icons";
 import clsx from "clsx";
 import React, { ChangeEvent, FormEvent, MouseEvent, useState } from "react";
-import { useDispatch } from "react-redux";
-import { Nullable, SymbolType } from "../../lib/constants/types";
-import { add, remove } from "../../lib/redux/slices/stockSlice";
-import { generateSymbol } from "../../lib/utils/symbolUtils";
+import { useDispatch, useSelector } from "react-redux";
+import { add, remove, selectNotes } from "../../lib/redux/slices/stockSlice";
 import useStyles from "./useStyles";
 
-export function SymbolList({
-  symbolNameList,
-  selectedSymbol,
-  setSelectedSymbol,
-  setSelectedSymbolByName,
-}: {
-  symbolNameList: string[];
-  selectedSymbol: Nullable<SymbolType>;
-  setSelectedSymbol: (symbolName: Nullable<SymbolType>) => void;
-  setSelectedSymbolByName: (symbolName: Nullable<string>) => void;
-}) {
+export function SetupBar() {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const [symbolText, setSymbolText] = useState("");
+  const [note, setNote] = useState("");
+  const notesList = useSelector(selectNotes);
 
-  const isValid = !!symbolText;
+  const isValid = !!note;
 
   function onChange(
     event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
   ) {
-    setSymbolText(event?.target?.value);
-  }
-
-  function selectSymbol(symbolName: Nullable<string>) {
-    setSelectedSymbolByName(symbolName);
+    setNote(event?.target?.value);
   }
 
   function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const newSymbol = generateSymbol({ name: symbolText });
-    dispatch(add(newSymbol));
-    setSelectedSymbol(newSymbol);
-    setSymbolText("");
+    dispatch(add(note));
+    setNote("");
   }
 
-  function removeSymbol(symbolName: string) {
-    if (selectedSymbol?.name === symbolName) {
-      selectSymbol(null);
-    }
-    dispatch(remove(symbolName));
+  function removeNote(toRemove: string) {
+    dispatch(remove(toRemove));
   }
 
   return (
@@ -67,7 +47,7 @@ export function SymbolList({
             id="outlined-basic"
             variant="outlined"
             onChange={onChange}
-            value={symbolText}
+            value={note}
             placeholder="Enter stock symbol"
           />
           <IconButton
@@ -81,29 +61,25 @@ export function SymbolList({
         </Box>
       </form>
       <Box mt={3} display="flex" flexDirection="column">
-        {symbolNameList.map((symbolName) => (
+        {notesList.map((item) => (
           <Box
             display="flex"
             alignItems="center"
             flex={1}
-            className={clsx(
-              classes.symbolRow,
-              selectedSymbol?.name === symbolName && classes.selectedSymbolRow
-            )}
-            key={symbolName}
-            onClick={() => selectSymbol(symbolName)}
+            className={clsx(classes.symbolRow)}
+            key={item}
           >
             <IconButton
               className={clsx("trashButton", classes.trashButton)}
               onClick={(e: MouseEvent<any>) => {
                 e.stopPropagation();
-                removeSymbol(symbolName);
+                removeNote(item);
               }}
             >
               <HighlightOff color="primary" fontSize="small" />
             </IconButton>
 
-            <Typography color="primary">{symbolName.toUpperCase()}</Typography>
+            <Typography color="primary">{item.toUpperCase()}</Typography>
           </Box>
         ))}
       </Box>
