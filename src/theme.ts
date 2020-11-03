@@ -18,6 +18,9 @@ const theme = createMuiTheme({
     background: {
       default: darken(darkPurple, 0.2),
     },
+    text: {
+      primary: lighten(darkPurple, 0.5),
+    },
   },
   overrides: {
     MuiPaper: {

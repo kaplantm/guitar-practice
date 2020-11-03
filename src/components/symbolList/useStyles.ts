@@ -9,6 +9,7 @@ const useStyles = makeStyles((theme) => ({
   },
   symbolInput: {
     backgroundColor: lighten(darkPurple, 0.3),
+    color: darken(darkPurple, 0.4),
   },
   iconButton: {
     margin: theme.spacing(0, 3),

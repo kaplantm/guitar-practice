@@ -1,46 +1,53 @@
-import { Box, Paper } from "@material-ui/core";
-import React, { useEffect } from "react";
-import { SymbolType, Nullable } from "../../lib/constants/types";
-import useStyles from "./useStyles";
+import { Box, Container, Grid } from "@material-ui/core";
+import React from "react";
+import { AsyncDashPanel } from "./async-dash-panel";
+import { QuotePanel } from "./async-dash-panel/panels/quote-panel";
+// import useStyles from "./useStyles";
 
-export function Dash({
-  selectedSymbol,
-}: {
-  selectedSymbol: Nullable<SymbolType>;
-}) {
-  const classes = useStyles();
-
-  // useEffect(() => {
-  //   const onGetData = (error: any, data: any, response: any) => {
-  //     if (error) {
-  //       setState((prev) => ({ ...prev, error }));
-  //     } else {
-  //       setState({
-  //         data,
-  //         error,
-  //         updatedAt: new Date().getTime(),
-  //       });
-  //     }
-  //   };
-
-  // TODO
-  // quote - refresh button for quote
-  // price targets - separate refresh buttons for everything else
-  // reccs
-  // basic financials
-  // Company Profile 2
-  // when page loads refresh quote if older than 15 minutes
-  // refresh everything else if older than 12 hours
-  // types for each endpoint
-  // notes panel - local storage
-
-  //   if (selectedSymbol?.name) {
-  //     // createListenerForSymbol(selectedSymbol.name, (event: any) => {
-  //     //   console.log("Message from server ", event.data);
-  //     // });
-  //     getQuote(selectedSymbol?.name, onGetData);
-  //   }
-  // }, [selectedSymbol]);
-
-  return <Box className={classes.dash}>dash: {selectedSymbol?.name}</Box>;
+export function Dash({ symbolName }: { symbolName: string }) {
+  // const classes = useStyles();
+  if (!symbolName) {
+    // TODO: make generic error component
+    return <h3>missing symbol name</h3>;
+  }
+  return (
+    <Container>
+      <Box mt={3} mb={3}>
+        <Grid container spacing={3}>
+          <Grid item xs={12}>
+            <AsyncDashPanel
+              Panel={QuotePanel}
+              symbolName={symbolName}
+              dataPointKey="quote"
+              title="Quote"
+            />
+          </Grid>
+          {/* <Grid item xs={6}>
+            <AsyncDashPanel
+              Panel={QuotePanel}
+              symbolName={symbolName}
+              dataPointKey="quote"
+              title="Price Targets"
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <AsyncDashPanel
+              Panel={QuotePanel}
+              symbolName={symbolName}
+              dataPointKey="quote"
+              title="Recommendations"
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <AsyncDashPanel
+              Panel={QuotePanel}
+              symbolName={symbolName}
+              dataPointKey="quote"
+              title="Basic Financials"
+            />
+          </Grid> */}
+        </Grid>
+      </Box>
+    </Container>
+  );
 }

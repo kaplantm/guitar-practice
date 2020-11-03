@@ -61,7 +61,9 @@ export function SymbolList({
       <form noValidate autoComplete="off" onSubmit={onSubmit}>
         <Box display="flex" alignItems="center">
           <TextField
-            InputProps={{ classes: { root: classes.symbolInput } }}
+            InputProps={{
+              classes: { root: classes.symbolInput },
+            }}
             id="outlined-basic"
             variant="outlined"
             onChange={onChange}

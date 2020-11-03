@@ -217,6 +217,7 @@ export function quote(
   symbol: string,
   callback: (error: any, data: any, response: any) => void
 ) {
+  console.log("client quote");
   return finnhubClient.quote(symbol, callback);
 }
 

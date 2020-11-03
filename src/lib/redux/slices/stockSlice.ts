@@ -4,7 +4,7 @@ import {
   DataPointType,
   SymbolType,
 } from "../../constants/types";
-import * as finnhub from "../../finnhub/client";
+import * as finnhub from "../../../lib/finnhub/client";
 import { generateSymbol } from "../../utils/symbolUtils";
 import { AppThunk, RootState } from "../store";
 
@@ -70,21 +70,32 @@ export const getDataPointThunk = (
   // TODO: might not need to be a thunk
   symbol: string,
   key: DataPointKeysType
-): AppThunk => async (dispatch: any) => {
+): AppThunk => (dispatch: any, getState) => {
+  console.log("******");
   const callback = (error: any, data: any, response: any) => {
-    dispatch(
-      setDataPoint({
-        key,
-        symbol,
-        error,
-        data,
-        updatedAt: new Date().getTime(),
-      })
-    );
+    const attemptedAt = new Date().getTime();
+    const prevData = getState().stocks[symbol]?.data;
+    const lastUpdatedAt =
+      prevData && prevData[key] ? prevData[key].updatedAt : 0;
+    console.log("getDataPointThunk", { attemptedAt, lastUpdatedAt });
+    if (attemptedAt - lastUpdatedAt > 3000 || attemptedAt === 0) {
+      console.log("update", data, typeof data);
+      // last update was more than three seconds ago
+      dispatch(
+        setDataPoint({
+          key,
+          symbol,
+          error,
+          data: JSON.parse(JSON.stringify(data)), // convert from class to plain object to make redux happy
+          updatedAt: data && !error ? new Date().getTime() : lastUpdatedAt,
+          attemptedAt,
+        })
+      );
+    }
   };
-
   const getDataFunction = finnhub[key];
-  if (getDataFunction) {
+  console.log("getDataPointThunk", { key, symbol, getDataFunction });
+  if (getDataFunction && symbol) {
     getDataFunction(symbol, callback);
   }
 };
@@ -92,6 +103,8 @@ export const getDataPointThunk = (
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of
 // in the slice file. For example: `useSelector((state: RootState) => state.counter.value)`
-export const selectSymbols = (state: RootState) => state.stocks; //TODO: rename symbolList
+export const selectSymbols = (state: RootState) => state.stocks;
+export const selectSymbol = (symbol: string) => (state: RootState) =>
+  state.stocks[symbol];
 
 export default stockSlice.reducer;

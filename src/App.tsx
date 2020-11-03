@@ -44,7 +44,12 @@ function App() {
         setSelectedSymbol={updateSymbol}
         symbolNameList={symbolNameList}
       />
-      <Dash selectedSymbol={selectedSymbol} />
+      {selectedSymbol?.name ? (
+        <Dash symbolName={selectedSymbol?.name} />
+      ) : (
+        // TODO: make generic error component
+        <h3>no symbol</h3>
+      )}
     </Box>
   );
 }
