@@ -1,10 +1,5 @@
 import { red } from "@material-ui/core/colors";
-import {
-  createMuiTheme,
-  darken,
-  fade,
-  lighten,
-} from "@material-ui/core/styles";
+import { createMuiTheme, darken, lighten } from "@material-ui/core/styles";
 import { darkPurple } from "./lib/constants/colors";
 
 // TODO: change default font color

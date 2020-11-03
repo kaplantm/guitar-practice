@@ -10,7 +10,7 @@ import clsx from "clsx";
 import React, { ChangeEvent, FormEvent, MouseEvent, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Nullable, SymbolType } from "../../lib/constants/types";
-import { add, remove } from "../../lib/redux/slices/symbolListSlice";
+import { add, remove } from "../../lib/redux/slices/stockSlice";
 import { generateSymbol } from "../../lib/utils/symbolUtils";
 import useStyles from "./useStyles";
 
@@ -38,13 +38,11 @@ export function SymbolList({
   }
 
   function selectSymbol(symbolName: Nullable<string>) {
-    console.log("selectSymbol");
     setSelectedSymbolByName(symbolName);
   }
 
   function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    console.log("onSubmit");
     const newSymbol = generateSymbol({ name: symbolText });
     dispatch(add(newSymbol));
     setSelectedSymbol(newSymbol);
@@ -52,9 +50,7 @@ export function SymbolList({
   }
 
   function removeSymbol(symbolName: string) {
-    console.log("remove", { symbolName, selectedSymbol });
     if (selectedSymbol?.name === symbolName) {
-      console.log("if");
       selectSymbol(null);
     }
     dispatch(remove(symbolName));

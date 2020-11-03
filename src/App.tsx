@@ -5,7 +5,7 @@ import { SymbolList } from "./components/symbolList";
 import { Dash } from "./components/dash";
 import { SymbolType, Nullable } from "./lib/constants/types";
 import { useSelector } from "react-redux";
-import { selectSymbols } from "./lib/redux/slices/symbolListSlice";
+import { selectSymbols } from "./lib/redux/slices/stockSlice";
 
 function App() {
   const symbols = useSelector(selectSymbols) || {};
@@ -18,7 +18,6 @@ function App() {
     ? symbolNameList.indexOf(selectedSymbol.name) !== -1
     : !defaultSymbol;
 
-  console.log({ hasValidSelection, selectedSymbol, symbols });
   React.useEffect(() => {
     if (!hasValidSelection) {
       setSelectedSymbol(defaultSymbol);

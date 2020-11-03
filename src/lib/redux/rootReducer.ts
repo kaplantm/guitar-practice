@@ -1,8 +1,8 @@
 import { combineReducers } from "@reduxjs/toolkit";
-import symbolListReducer from "./slices/symbolListSlice";
+import stockReducer from "./slices/stockSlice";
 
 const rootReducer = combineReducers({
-  symbolList: symbolListReducer,
+  stocks: stockReducer,
 });
 
 export default rootReducer;
