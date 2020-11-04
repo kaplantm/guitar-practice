@@ -1,5 +1,6 @@
 export type Nullable<T> = T | null;
 
+// TODO: rremovev old
 export type DataPointType<T> = {
   data: Nullable<T>;
   error: any; // TODO: type
@@ -16,5 +17,11 @@ export type SymbolType = {
     profile: DataPointType<any>;
   };
 };
+
+export enum playerStatusEnum {
+  PLAYING = "playing",
+  PAUSED = "paused",
+  STOPPED = "stopped",
+}
 
 export type DataPointKeysType = keyof SymbolType["data"];

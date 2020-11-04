@@ -18,8 +18,10 @@ import {
   selectAllNotesSlice,
 } from "../../lib/redux/slices/stockSlice";
 import useStyles, { noteSpacing, noteSize } from "./useStyles";
-import metronome from "../../assets/metronome.wav";
+import metronomeFile from "../../assets/metronome.wav";
 import { darkBlue } from "../../lib/constants/colors";
+import { playerStatusEnum } from "../../lib/constants/types";
+import { RootStateType } from "../../lib/redux/rootReducer";
 
 // const metronomeFile = require("../../assets/metronome.wav");
 // const metronome = new Audio(metronomeFile);
@@ -32,75 +34,76 @@ function shuffleArray(array: any[]) {
   }
 }
 
-async function wakeLock() {
+function wakeLock() {
   if ("wakeLock" in navigator) {
-    const wakeLockInstance = await (navigator as any).wakeLock.request(
-      "screen"
-    );
-    console.log(wakeLockInstance);
+    (navigator as any).wakeLock.request("screen");
   }
 }
 
-const startingIndex = 10; // separate variable to ease manipulation for testing
+const startingIndex = 0; // separate variable to ease manipulation for testing
 
-export function NoteTray() {
+function setUpNotesToPlay(list: string[], totalBeats: number) {
+  if (!list?.length || !totalBeats) {
+    return [];
+  }
+  const uniqueNotes = list.length;
+  const dividend = Math.floor(totalBeats / uniqueNotes);
+  const remainer = totalBeats % uniqueNotes;
+  const notesToPlayNestedArray = list.map((note: string, index: number) => {
+    const length = index === 0 ? dividend + remainer : dividend;
+    return new Array(length).fill(note);
+  });
+  const notesToPlayArray = notesToPlayNestedArray.flat();
+  shuffleArray(notesToPlayArray);
+  return ["1", "2", "3", "4", ...notesToPlayArray];
+}
+
+export function NoteTray({ playerStatus }: { playerStatus: playerStatusEnum }) {
   const classes = useStyles();
-  const {
-    list,
-    totalBeats,
-    bpm,
-  }: { list: string[]; totalBeats: number; bpm: number } = useSelector(
+  const { list, minutes, bpm, metronome }: RootStateType["notes"] = useSelector(
     selectAllNotesSlice
   );
-  const [notesToPlay, setNotesToPlay] = useState<string[]>([]);
+  const totalBeats = minutes * bpm;
+  // const [notesToPlay, setNotesToPlay] = useState<string[]>([]);
   const [activeIndex, setActiveIndex] = useState(startingIndex);
-  const [audio, setAudio] = useState(false);
-  const [play] = useSound(metronome, { volume: 1 });
+  const [play] = useSound(metronomeFile, { volume: 1 });
+  const notesToPlay = React.useMemo(() => setUpNotesToPlay(list, totalBeats), [
+    list,
+    totalBeats,
+  ]);
+  const hasEnded = activeIndex >= notesToPlay.length - 1;
 
   React.useEffect(() => {
     wakeLock();
   }, []);
 
-  useEffect(() => {
-    setActiveIndex(startingIndex);
-    if (!list?.length || !totalBeats) {
-      setNotesToPlay([]);
-    }
-    const uniqueNotes = list.length;
-    const dividend = Math.floor(totalBeats / uniqueNotes);
-    const remainer = totalBeats % uniqueNotes;
-    console.log("****", { list, totalBeats, uniqueNotes });
-    const notesToPlayNestedArray = list.map((note: string, index: number) => {
-      const length = index === 0 ? dividend + remainer : dividend;
-      console.log("****", { length, remainer, dividend });
-      return new Array(length).fill(note);
-    });
-    const notesToPlayArray = notesToPlayNestedArray.flat();
-    shuffleArray(notesToPlayArray);
-    setNotesToPlay(notesToPlayArray);
-  }, [list, totalBeats]);
+  // TODO: blur from end to fade out
 
   useEffect(() => {
     // TODO: bpm, ending, clear if bpm changes - or hide this whole component in edit mode so it all resets
     let interval: any;
-    if (interval) {
+    if (playerStatus !== playerStatusEnum.PLAYING && interval) {
       clearInterval(interval);
-    }
-    if (bpm && bpm < 500) {
-      const timing = (1000 * 60) / bpm;
-      interval = setInterval(() => {
-        // console.log({ audio, metronome });
-        if (audio) {
-          console.log("play");
-          setTimeout(function () {
-            play();
-          }, 100);
-        }
-        setActiveIndex((prev) => prev + 1);
-      }, timing);
+    } else {
+      if (
+        bpm &&
+        bpm < 500 &&
+        playerStatus === playerStatusEnum.PLAYING &&
+        !hasEnded
+      ) {
+        const timing = (1000 * 60) / bpm;
+        interval = setInterval(() => {
+          if (metronome) {
+            setTimeout(function () {
+              play();
+            }, 100);
+          }
+          setActiveIndex((prev) => prev + 1);
+        }, timing);
+      }
     }
     return () => clearInterval(interval);
-  }, [bpm, audio]);
+  }, [bpm, metronome, playerStatus, play, hasEnded]);
 
   const left = -(
     activeIndex * noteSpacing * 2 +
@@ -108,15 +111,10 @@ export function NoteTray() {
     noteSpacing
   );
 
-  console.log({ activeIndex, left });
-
+  console.log({ length: notesToPlay.length, totalBeats });
   return (
     <Paper elevation={4} className={classes.scrollArea}>
-      BPM: {bpm}
-      <Button onClick={() => setAudio(true)}>audio</Button>
       <Box
-        p={6}
-        display="flex"
         className={classes.songContainer}
         style={{
           left,
@@ -137,7 +135,8 @@ export function NoteTray() {
                 justifyContent="center"
                 className={clsx(
                   classes.note,
-                  index === activeIndex && classes.currentNote
+                  index === activeIndex && classes.currentNote,
+                  index <= 3 && classes.countdown
                 )}
               >
                 <Typography color="inherit" variant="h1">

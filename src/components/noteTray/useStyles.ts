@@ -6,12 +6,18 @@ export const noteSpacing = 50;
 
 const useStyles = makeStyles((theme) => ({
   scrollArea: {
-    overflow: "hidden",
+    position: "relative",
+    display: "flex",
+    overflow: "scroll",
+    paddingTop: theme.spacing(4),
+    marginBottom: theme.spacing(4),
   },
   songContainer: {
     transition: "left .5s",
     position: "relative",
-    left: -50,
+    display: "flex",
+    flex: 1,
+    padding: theme.spacing(6),
   },
   note: {
     transition: "border .5s, color .5s",
@@ -24,10 +30,14 @@ const useStyles = makeStyles((theme) => ({
     flexShrink: 0,
     flexGrow: 0,
     color: lighten(darkBlue, 0.3),
+    backgroundColor: darken(darkBlue, 0.1),
   },
   currentNote: {
     border: `3px solid ${lighten(darkBlue, 0.5)}`,
     color: lighten(darkBlue, 0.6),
+  },
+  countdown: {
+    opacity: 0.5,
   },
   dot: {
     transition: "background-color .5s",

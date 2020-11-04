@@ -1,16 +1,16 @@
 import { red } from "@material-ui/core/colors";
 import { createMuiTheme, darken, lighten } from "@material-ui/core/styles";
-import { darkBlue } from "./lib/constants/colors";
+import { darkBlue, darkTeal } from "./lib/constants/colors";
 
 // TODO: change default font color
 // A custom theme for this app
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: lighten(darkBlue, 0.3),
+      main: lighten(darkBlue, 0.6),
     },
     secondary: {
-      main: "#19857b",
+      main: lighten(darkBlue, 0.3),
     },
     error: {
       main: red.A400,
