@@ -1,0 +1,28 @@
+{
+  "files": {
+    "main.css": "/practice-track/static/css/main.065aff62.chunk.css",
+    "main.js": "/practice-track/static/js/main.85eeb649.chunk.js",
+    "main.js.map": "/practice-track/static/js/main.85eeb649.chunk.js.map",
+    "runtime-main.js": "/practice-track/static/js/runtime-main.9b144d15.js",
+    "runtime-main.js.map": "/practice-track/static/js/runtime-main.9b144d15.js.map",
+    "static/css/2.38acf152.chunk.css": "/practice-track/static/css/2.38acf152.chunk.css",
+    "static/js/2.31451aac.chunk.js": "/practice-track/static/js/2.31451aac.chunk.js",
+    "static/js/2.31451aac.chunk.js.map": "/practice-track/static/js/2.31451aac.chunk.js.map",
+    "static/js/3.d3815bfb.chunk.js": "/practice-track/static/js/3.d3815bfb.chunk.js",
+    "static/js/3.d3815bfb.chunk.js.map": "/practice-track/static/js/3.d3815bfb.chunk.js.map",
+    "index.html": "/practice-track/index.html",
+    "static/css/2.38acf152.chunk.css.map": "/practice-track/static/css/2.38acf152.chunk.css.map",
+    "static/css/main.065aff62.chunk.css.map": "/practice-track/static/css/main.065aff62.chunk.css.map",
+    "static/js/2.31451aac.chunk.js.LICENSE.txt": "/practice-track/static/js/2.31451aac.chunk.js.LICENSE.txt",
+    "static/js/3.d3815bfb.chunk.js.LICENSE.txt": "/practice-track/static/js/3.d3815bfb.chunk.js.LICENSE.txt",
+    "static/media/metronome.850b947b.wav": "/practice-track/static/media/metronome.850b947b.wav",
+    "static/media/index.css": "/practice-track/static/media/roboto-vietnamese-400-normal.52cebac0.woff2"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.9b144d15.js",
+    "static/css/2.38acf152.chunk.css",
+    "static/js/2.31451aac.chunk.js",
+    "static/css/main.065aff62.chunk.css",
+    "static/js/main.85eeb649.chunk.js"
+  ]
+}
