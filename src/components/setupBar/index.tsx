@@ -198,3 +198,5 @@ export function SetupBar({ disabled }: { disabled: boolean }) {
     </>
   );
 }
+
+export default React.memo(SetupBar);

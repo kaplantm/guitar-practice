@@ -18,15 +18,10 @@ function shuffleArray(array: any[]) {
   }
 }
 
-function wakeLock() {
-  if ("wakeLock" in navigator) {
-    (navigator as any).wakeLock.request("screen");
-  }
-}
-
 const startingIndex = 0; // separate variable to ease manipulation for testing
 
 function setUpNotesToPlay(list: string[], totalBeats: number) {
+  console.log("setup");
   if (!list?.length || !totalBeats) {
     return [];
   }
@@ -77,16 +72,13 @@ export function NoteTray({ playerStatus }: { playerStatus: playerStatusEnum }) {
     runInterval ? timing : null
   );
 
-  React.useEffect(() => {
-    wakeLock();
-  }, []);
-
   const left = -(
     activeIndex * noteSpacing * 2 +
     activeIndex * noteSize +
     noteSpacing
   );
 
+  console.log("noteTray", { notesToPlay: notesToPlay.length });
   return (
     <Paper elevation={4} className={classes.scrollArea}>
       <div
@@ -101,3 +93,5 @@ export function NoteTray({ playerStatus }: { playerStatus: playerStatusEnum }) {
     </Paper>
   );
 }
+
+export default React.memo(NoteTray);

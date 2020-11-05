@@ -1,11 +1,20 @@
 import React, { useState } from "react";
 import { Box, Grid, Container } from "@material-ui/core";
-import { SetupBar } from "./components/setupBar";
-import { NoteTray } from "./components/noteTray";
+import SetupBar from "./components/setupBar";
+import NoteTray from "./components/noteTray";
 import { playerStatusEnum } from "./lib/constants/types";
-import { ControlBar } from "./components/controlBar";
+import ControlBar from "./components/controlBar";
+
+function wakeLock() {
+  if ("wakeLock" in navigator) {
+    (navigator as any).wakeLock.request("screen");
+  }
+}
 
 function App() {
+  React.useEffect(() => {
+    wakeLock();
+  }, []);
   const [playerStatus, setPlayerStatus] = useState<playerStatusEnum>(
     playerStatusEnum.STOPPED
   );

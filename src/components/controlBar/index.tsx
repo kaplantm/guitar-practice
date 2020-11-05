@@ -51,3 +51,5 @@ export function ControlBar({
     </Box>
   );
 }
+
+export default React.memo(ControlBar);
