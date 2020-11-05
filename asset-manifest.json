@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/guitar-practice/static/css/main.065aff62.chunk.css",
-    "main.js": "/guitar-practice/static/js/main.f4d07912.chunk.js",
-    "main.js.map": "/guitar-practice/static/js/main.f4d07912.chunk.js.map",
+    "main.js": "/guitar-practice/static/js/main.b52f4274.chunk.js",
+    "main.js.map": "/guitar-practice/static/js/main.b52f4274.chunk.js.map",
     "runtime-main.js": "/guitar-practice/static/js/runtime-main.b96f01ec.js",
     "runtime-main.js.map": "/guitar-practice/static/js/runtime-main.b96f01ec.js.map",
     "static/css/2.fa75df34.chunk.css": "/guitar-practice/static/css/2.fa75df34.chunk.css",
@@ -23,6 +23,6 @@
     "static/css/2.fa75df34.chunk.css",
     "static/js/2.3f8f7eac.chunk.js",
     "static/css/main.065aff62.chunk.css",
-    "static/js/main.f4d07912.chunk.js"
+    "static/js/main.b52f4274.chunk.js"
   ]
 }
