@@ -8,6 +8,7 @@ import metronomeFile from "../../assets/metronome.wav";
 import { playerStatusEnum } from "../../lib/constants/types";
 import { RootStateType } from "../../lib/redux/rootReducer";
 import NotesArray from "./notesMemoized";
+import useInterval from "../../hooks/useInterval";
 
 // TODO: move
 function shuffleArray(array: any[]) {
@@ -47,7 +48,6 @@ export function NoteTray({ playerStatus }: { playerStatus: playerStatusEnum }) {
     selectAllNotesSlice
   );
   const totalBeats = minutes * bpm;
-  // const [notesToPlay, setNotesToPlay] = useState<string[]>([]);
   const [activeIndex, setActiveIndex] = useState(startingIndex);
   const [play] = useSound(metronomeFile, { volume: 1 });
   const notesToPlay = React.useMemo(() => setUpNotesToPlay(list, totalBeats), [
@@ -55,38 +55,31 @@ export function NoteTray({ playerStatus }: { playerStatus: playerStatusEnum }) {
     totalBeats,
   ]);
   const hasEnded = activeIndex >= notesToPlay.length - 1;
+  const runInterval = !hasEnded && playerStatus === playerStatusEnum.PLAYING;
+  const timing = (1000 * 60) / bpm;
 
-  React.useEffect(() => {
-    wakeLock();
-  }, []);
-
-  // TODO: blur from end to fade out
-
-  useEffect(() => {
-    // TODO: bpm, ending, clear if bpm changes - or hide this whole component in edit mode so it all resets
-    let interval: any;
-    if (playerStatus !== playerStatusEnum.PLAYING && interval) {
-      clearInterval(interval);
-    } else {
+  useInterval(
+    () => {
       if (
         bpm &&
         bpm < 500 &&
         playerStatus === playerStatusEnum.PLAYING &&
         !hasEnded
       ) {
-        const timing = (1000 * 60) / bpm;
-        interval = setInterval(() => {
-          if (metronome) {
-            setTimeout(function () {
-              play();
-            }, 100);
-          }
-          setActiveIndex((prev) => prev + 1);
-        }, timing);
+        if (metronome) {
+          setTimeout(function () {
+            play();
+          }, 100);
+        }
+        setActiveIndex((prev) => prev + 1);
       }
-    }
-    return () => clearInterval(interval);
-  }, [bpm, metronome, playerStatus, play, hasEnded]);
+    },
+    runInterval ? timing : null
+  );
+
+  React.useEffect(() => {
+    wakeLock();
+  }, []);
 
   const left = -(
     activeIndex * noteSpacing * 2 +
@@ -96,15 +89,15 @@ export function NoteTray({ playerStatus }: { playerStatus: playerStatusEnum }) {
 
   return (
     <Paper elevation={4} className={classes.scrollArea}>
-      <Box className={classes.activeBox} />
-      <Box
+      <div
         className={classes.songContainer}
         style={{
           left,
         }}
       >
         <NotesArray notesToPlay={notesToPlay} />
-      </Box>
+      </div>
+      <div className={classes.inActiveBox} />
     </Paper>
   );
 }

@@ -18,13 +18,14 @@ const useStyles = makeStyles((theme) => ({
     flex: 1,
     padding: theme.spacing(3),
   },
-  activeBox: {
+  inActiveBox: {
     position: "absolute",
-    backgroundColor: lighten(darkBlue, 0.5),
+    backgroundColor: darken(darkBlue, 0.5),
+    opacity: 0.5,
     top: 0,
     bottom: 0,
-    left: 0,
-    width: noteSize + noteSpacing,
+    left: noteSize + noteSpacing,
+    right: 0,
   },
   note: {
     transition: "border .5s, color .5s",
