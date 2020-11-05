@@ -111,7 +111,6 @@ export function NoteTray({ playerStatus }: { playerStatus: playerStatusEnum }) {
     noteSpacing
   );
 
-  console.log({ length: notesToPlay.length, totalBeats });
   return (
     <Paper elevation={4} className={classes.scrollArea}>
       <Box

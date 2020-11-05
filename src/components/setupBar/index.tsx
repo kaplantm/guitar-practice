@@ -51,11 +51,9 @@ export function SetupBar({ disabled }: { disabled: boolean }) {
     dispatch(remove(toRemove));
   }
   function updateBpm(event: any, val: number | number[]) {
-    console.log("update b");
     dispatch(setBPM(val as number));
   }
   function updateMinutes(event: any, val: number | number[]) {
-    console.log("update m");
     dispatch(setMinutes(val as number));
   }
   function handleToggleAudio(event: any) {
@@ -63,7 +61,6 @@ export function SetupBar({ disabled }: { disabled: boolean }) {
   }
   const defaultBpm = React.useMemo(() => bpm, []);
   const defaultMinutes = React.useMemo(() => minutes, []);
-  console.log({ minutes, bpm });
 
   return (
     <>

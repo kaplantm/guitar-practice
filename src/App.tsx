@@ -11,6 +11,7 @@ function App() {
   );
   return (
     <Container maxWidth="lg">
+      no animations
       <Box display="flex" flex={1} mt={3} mb={3}>
         {/* TODO: play pause, countdown */}
         <Grid container spacing={3}>

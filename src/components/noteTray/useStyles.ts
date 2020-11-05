@@ -13,14 +13,14 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(4),
   },
   songContainer: {
-    transition: "left .5s",
+    // transition: "left .5s",
     position: "relative",
     display: "flex",
     flex: 1,
     padding: theme.spacing(6),
   },
   note: {
-    transition: "border .5s, color .5s",
+    // transition: "border .5s, color .5s",
     padding: theme.spacing(3, 0),
     width: noteSize,
     marginLeft: noteSpacing,
