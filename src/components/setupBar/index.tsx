@@ -157,7 +157,7 @@ export function SetupBar({ disabled }: { disabled: boolean }) {
               disabled={disabled}
               marks
               min={20}
-              max={150}
+              max={100}
             />
           </Box>
           <Box display="flex" flex={1} m={3}>

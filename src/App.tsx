@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Box, Grid, Container } from "@material-ui/core";
+import smoothscroll from "smoothscroll-polyfill";
 import SetupBar from "./components/setupBar";
 import NoteTray from "./components/noteTray";
 import { playerStatusEnum } from "./lib/constants/types";
@@ -14,6 +15,7 @@ function wakeLock() {
 function App() {
   React.useEffect(() => {
     wakeLock();
+    smoothscroll.polyfill();
   }, []);
   const [playerStatus, setPlayerStatus] = useState<playerStatusEnum>(
     playerStatusEnum.STOPPED

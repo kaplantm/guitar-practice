@@ -42,6 +42,7 @@ export function NoteTray({ playerStatus }: { playerStatus: playerStatusEnum }) {
   const { list, minutes, bpm, metronome }: RootStateType["notes"] = useSelector(
     selectAllNotesSlice
   );
+  const songContainerRef = React.useRef(null);
   const totalBeats = minutes * bpm;
   const [activeIndex, setActiveIndex] = useState(startingIndex);
   const [play] = useSound(metronomeFile, { volume: 1 });
@@ -52,7 +53,7 @@ export function NoteTray({ playerStatus }: { playerStatus: playerStatusEnum }) {
   const hasEnded = activeIndex >= notesToPlay.length - 1;
   const runInterval = !hasEnded && playerStatus === playerStatusEnum.PLAYING;
   const timing = (1000 * 60) / bpm;
-
+  const left = activeIndex * noteSpacing * 2 + activeIndex * noteSize;
   useInterval(
     () => {
       if (
@@ -61,6 +62,14 @@ export function NoteTray({ playerStatus }: { playerStatus: playerStatusEnum }) {
         playerStatus === playerStatusEnum.PLAYING &&
         !hasEnded
       ) {
+        console.log("songContainerRef.current", songContainerRef.current);
+        if (songContainerRef.current) {
+          console.log("scrroll", { left });
+          (songContainerRef.current as any).scrollTo({
+            left,
+            behavior: "smooth",
+          });
+        }
         if (metronome) {
           setTimeout(function () {
             play();
@@ -72,25 +81,21 @@ export function NoteTray({ playerStatus }: { playerStatus: playerStatusEnum }) {
     runInterval ? timing : null
   );
 
-  const left = -(
-    activeIndex * noteSpacing * 2 +
-    activeIndex * noteSize +
-    noteSpacing
-  );
-
   console.log("noteTray", { notesToPlay: notesToPlay.length });
   return (
-    <Paper elevation={4} className={classes.scrollArea}>
-      <div
-        className={classes.songContainer}
-        style={{
-          left,
-        }}
+    <div className={classes.scrollAreaWrapper}>
+      <Paper
+        elevation={4}
+        className={classes.scrollArea}
+        ref={songContainerRef}
       >
-        <NotesArray notesToPlay={notesToPlay} />
-      </div>
+        <div className={classes.songContainer}>
+          <NotesArray notesToPlay={notesToPlay} />
+        </div>
+      </Paper>
+
       <div className={classes.inActiveBox} />
-    </Paper>
+    </div>
   );
 }
 

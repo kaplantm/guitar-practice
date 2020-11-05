@@ -5,18 +5,20 @@ export const noteSize = 150;
 export const noteSpacing = 50;
 
 const useStyles = makeStyles((theme) => ({
-  scrollArea: {
+  scrollAreaWrapper: {
     position: "relative",
+  },
+  scrollArea: {
     display: "flex",
-    overflow: "scroll",
+    overflow: "hidden",
     marginBottom: theme.spacing(42),
   },
   songContainer: {
-    transition: "left .5s",
     position: "relative",
     display: "flex",
     flex: 1,
     padding: theme.spacing(3),
+    left: -noteSpacing,
   },
   inActiveBox: {
     position: "absolute",
