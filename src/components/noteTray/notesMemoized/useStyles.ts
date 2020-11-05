@@ -1,31 +1,10 @@
 import { darken, lighten, makeStyles } from "@material-ui/core/styles";
-import { darkBlue } from "../../lib/constants/colors";
+import { darkBlue } from "../../../lib/constants/colors";
 
 export const noteSize = 150;
 export const noteSpacing = 50;
 
 const useStyles = makeStyles((theme) => ({
-  scrollArea: {
-    position: "relative",
-    display: "flex",
-    overflow: "scroll",
-    marginBottom: theme.spacing(42),
-  },
-  songContainer: {
-    transition: "left .5s",
-    position: "relative",
-    display: "flex",
-    flex: 1,
-    padding: theme.spacing(3),
-  },
-  activeBox: {
-    position: "absolute",
-    backgroundColor: lighten(darkBlue, 0.5),
-    top: 0,
-    bottom: 0,
-    left: 0,
-    width: noteSize + noteSpacing,
-  },
   note: {
     transition: "border .5s, color .5s",
     padding: theme.spacing(3, 0),

@@ -1,30 +1,13 @@
-import {
-  Box,
-  TextField,
-  Paper,
-  IconButton,
-  Typography,
-  Button,
-  lighten,
-} from "@material-ui/core";
-import { Add, HighlightOff } from "@material-ui/icons";
-import clsx from "clsx";
-import React, { ChangeEvent, FormEvent, useState, useEffect } from "react";
+import { Box, Paper } from "@material-ui/core";
+import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import useSound from "use-sound";
-import {
-  add,
-  remove,
-  selectAllNotesSlice,
-} from "../../lib/redux/slices/stockSlice";
+import { selectAllNotesSlice } from "../../lib/redux/slices/stockSlice";
 import useStyles, { noteSpacing, noteSize } from "./useStyles";
 import metronomeFile from "../../assets/metronome.wav";
-import { darkBlue } from "../../lib/constants/colors";
 import { playerStatusEnum } from "../../lib/constants/types";
 import { RootStateType } from "../../lib/redux/rootReducer";
-
-// const metronomeFile = require("../../assets/metronome.wav");
-// const metronome = new Audio(metronomeFile);
+import NotesArray from "./notesMemoized";
 
 // TODO: move
 function shuffleArray(array: any[]) {
@@ -113,48 +96,14 @@ export function NoteTray({ playerStatus }: { playerStatus: playerStatusEnum }) {
 
   return (
     <Paper elevation={4} className={classes.scrollArea}>
+      <Box className={classes.activeBox} />
       <Box
         className={classes.songContainer}
         style={{
           left,
         }}
       >
-        {notesToPlay.map((item: string, index: number) => {
-          const key = `${item}-${index}`;
-          return (
-            <Box
-              display="flex"
-              flexDirection="column"
-              alignItems="center"
-              key={key}
-            >
-              <Box
-                display="flex"
-                alignItems="center"
-                justifyContent="center"
-                className={clsx(
-                  classes.note,
-                  index === activeIndex && classes.currentNote,
-                  index <= 3 && classes.countdown
-                )}
-              >
-                <Typography color="inherit" variant="h1">
-                  {item.toUpperCase()}
-                </Typography>
-              </Box>
-              <Box
-                className={clsx(
-                  classes.dot,
-                  index === activeIndex && classes.activeDot
-                )}
-                borderRadius={10}
-                width={20}
-                height={20}
-                margin={3}
-              />
-            </Box>
-          );
-        })}
+        <NotesArray notesToPlay={notesToPlay} />
       </Box>
     </Paper>
   );

@@ -1,12 +1,5 @@
-import {
-  Box,
-  TextField,
-  Paper,
-  IconButton,
-  Typography,
-} from "@material-ui/core";
+import { Box, IconButton } from "@material-ui/core";
 import { Pause, PlayArrow, Stop } from "@material-ui/icons";
-import clsx from "clsx";
 import React from "react";
 import { playerStatusEnum } from "../../lib/constants/types";
 import useStyles from "./useStyles";
